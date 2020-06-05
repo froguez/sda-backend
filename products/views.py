@@ -14,3 +14,11 @@ class HomeView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['context_text'] = 'my context text' 
         return context
+
+
+def product_list_view(request):
+    context = {'products':[
+        {'pk': 1, 'name': 'Nintendo Switch', 'price': 350.0, 'category': 'Video Game'}
+    ]}
+
+    return render(request, 'list.html', context)
