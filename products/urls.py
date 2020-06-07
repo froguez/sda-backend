@@ -1,8 +1,8 @@
 from django.urls import path, include
-from products.views import home_page_view, HomeView, product_list_view
+from products.views import HomeView, products_list_view, HomeView2
 
 urlpatterns = [
-    path('', home_page_view),
-    path('about/', HomeView.as_view()),
-    path('list/', product_list_view),
+    path('home/', HomeView.as_view(), name='home'),
+    path('home2/', HomeView2.as_view(), name='home2'),
+    path('list/', products_list_view, name='list')
 ]

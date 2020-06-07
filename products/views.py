@@ -1,24 +1,37 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView
+import random
 
-def home_page_view(request):
-    context = {'context_text' : 'my simple page'}
-
-    return render(request, 'index.html', context)
 
 class HomeView(TemplateView):
-    template_name = "index.html"
+    template_name = "home.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['context_text'] = 'my context text' 
+
+        lucky_number = random.randint(1, 100)
+
+        context = {'messages': {'m1': 'Hello SDA!', 'm2': 'Im alive!'},
+               'lucky_number': lucky_number}
+
+        return context
+    
+
+class HomeView2(HomeView):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        lucky_number = 7
+
+        context = {'messages': {'m1': 'Hello SDA!', 'm2': 'Im dead!'},
+                   'lucky_number': lucky_number}
+
         return context
 
-
-def product_list_view(request):
-    context = {'products':[
-        {'pk': 1, 'name': 'Nintendo Switch', 'price': 350.0, 'category': 'Video Game'}
-    ]}
-
+def products_list_view(request):
+    context = {'products' : [{'name' : 'xbox'}, {'name': 'Nintendo Switch'},
+                            {'name': 'Ps4'}]
+            }
     return render(request, 'list.html', context)

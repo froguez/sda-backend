@@ -1,21 +1,23 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<table class="table">
-    <tr>
-        <th>PK</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Category</th>
-    </tr>
-    {% for product in products %}
-    <tr>
-        <td>{{ product.pk }}</td>
-        <td>{{ product.name }}</a></td>
-        <td>{{ product.price }}</td>
-        <td>{{ product.category }}</td>
-    </tr>
-    {% endfor %}
-</table>
 
+{% block page_title %}
+List page
 {% endblock %}
+
+
+{% block content %}
+it comes from list template
+
+    <!-- user can see it-->
+    {# only developters can see it #}
+
+    <ul>
+        {% for p in products %}
+            <li> {{ p.name }} </li>
+        {% endfor %}
+    </ul>
+
+    {% endblock %}
+
+    
