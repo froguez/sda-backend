@@ -7,17 +7,25 @@ List page
 
 
 {% block content %}
-it comes from list template
 
-    <!-- user can see it-->
-    {# only developters can see it #}
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+    </tr>
+    <tr>
+        <td>1</td> 
+        <td>A fake product</td>
+        <td>100.00</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Another fake product</td>
+        <td>50.00</td>
+    </tr>
+        
+</table>
 
-    <ul>
-        {% for p in products %}
-            <li> {{ p.name }} </li>
-        {% endfor %}
-    </ul>
-
-    {% endblock %}
-
+{% endblock %}
     
