@@ -18,13 +18,17 @@ List page
 
     {% for product in products %}
     <tr>
-        <td>{{ product.id }}</td> 
+        <td><a href="{% url 'detail' product.id %}">{{product.id}}</a></td> 
         <td>{{ product.name }}</td>
-        <td>{{ product.price | default_if_none:"FREE"}}</td>
+        <td>{{ product.price | default_if_none:"--"}}</td>
         <td>{{ product.quantity }}</td>
     </tr>
     {% endfor %}
 </table>
+
+<hr>
+
+<a href="{% url 'create'%}"> Create a new product</a>
 
 {% endblock %}
     
