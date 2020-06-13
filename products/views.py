@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
+from products.models import Product
 import random
 
 
@@ -30,8 +31,8 @@ class HomeView2(HomeView):
 
         return context
 
-def products_list_view(request):
-    context = {'products' : [{'name' : 'xbox'}, {'name': 'Nintendo Switch'},
-                            {'name': 'Ps4'}]
-            }
-    return render(request, 'list.html', context)
+class ProductListView(ListView):
+    model = Product
+    template_name = 'list.html'
+    context_object_name = 'products'
+
