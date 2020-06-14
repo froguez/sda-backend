@@ -5,16 +5,38 @@ from products.models import Product
 from products.forms import ContactForm
 from django.urls import reverse_lazy
 import random
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def count_visited_view(request):
-    num_visited = 0
+    if not request.COOKIES.get('num_visited'):
+        response = HttpResponse('You have never visited this page')
+        response.set_cookie('num_visited', 0)
+    else:
+        num_visited = int(request.COOKIES.get('num_visited'))
+        num_visited += 1
+        response = HttpResponse('You have visited this page %d times'%(num_visited))
+        response.set_cookie('num_visited', num_visited)
     
-    response = HttpResponse('You have visited this page %d times'%(num_visited))
     return response
 
+def count_visited_view_session(request):
 
+    num_visited = request.session.get('num_visited', 0)
+
+    if num_visited == 0:
+        response = HttpResponse('You have never visited this page')
+        request.session['num_visited'] = 1
+    else:
+        num_visited += 1
+        response = HttpResponse(
+            'You have visited this page %d times' % (num_visited))
+        request.session['num_visited'] = num_visited
+
+    return response
+
+@login_required
 def session_page_view(request):
     if not request.session.get('flavor'):
         print("I don't know what cookie this user likes!")
@@ -32,6 +54,7 @@ def session_page_view(request):
     return response
 
 
+@login_required
 def cookie_page_view(request):
     if not request.COOKIES.get('flavor'):
         print("I don't know what cookie this user likes!")
@@ -58,7 +81,6 @@ class HomeView(TemplateView):
 
         return context
     
-
 class HomeView2(HomeView):
 
     def get_context_data(self, **kwargs):
@@ -76,7 +98,7 @@ class ProductListView(ListView):
     template_name = 'list.html'
     context_object_name = 'products'
 
-class CreateProductView(CreateView):
+class CreateProductView(LoginRequiredMixin, CreateView):
     model = Product
     template_name = 'create.html'
     fields = '__all__'
@@ -87,14 +109,14 @@ class DetailProductView(DetailView):
     template_name = 'detail.html'
     context_object_name = 'product'
 
-class UpdateProductView(UpdateView):
+class UpdateProductView(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = 'update.html'
     context_object_name = 'product'
     fields = '__all__'
     success_url = reverse_lazy('list')
 
-class DeleteProductView(DeleteView):
+class DeleteProductView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'delete.html'
     context_object_name = 'product'
