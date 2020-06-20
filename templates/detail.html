@@ -15,6 +15,14 @@ Detail page
 
 <hr>
 <a href="{% url 'update' product.id %}">UPDATE</a>
+
+{% if perms.products.delete_product %}
 <a href="{% url 'delete' product.id %}">DELETE</a>
+{% endif %}
+
+
+{% if perms.products.can_put_on_sale %}
+<p>PUT PRODUCT ON SALE</p>
+{% endif %}
 
 {% endblock %}

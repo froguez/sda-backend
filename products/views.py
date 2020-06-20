@@ -6,7 +6,7 @@ from products.forms import ContactForm
 from django.urls import reverse_lazy
 import random
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 def count_visited_view(request):
@@ -116,7 +116,9 @@ class UpdateProductView(LoginRequiredMixin, UpdateView):
     fields = '__all__'
     success_url = reverse_lazy('list')
 
-class DeleteProductView(LoginRequiredMixin, DeleteView):
+class DeleteProductView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = ['products.delete_product', ]
+
     model = Product
     template_name = 'delete.html'
     context_object_name = 'product'
